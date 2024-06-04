@@ -3,5 +3,5 @@ abstract class BaseService{
   // final String appId = "7094d3991048d0bfc1407d35dee9a0a3";
   final String appIdPath = "&appid=7094d3991048d0bfc1407d35dee9a0a3";
 
-  Future<dynamic> getResponse(String url);
+  Future<dynamic> getResponse(String city);
 }

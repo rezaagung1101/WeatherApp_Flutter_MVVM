@@ -2,20 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 import 'package:openweather_mvvm/model/api/app_exception.dart';
 import 'package:openweather_mvvm/model/services/base_service.dart';
-import 'package:openweather_mvvm/utils/constants.dart';
-import 'package:http/http.dart' as http;
 
 
-class MediaService extends BaseService {
+class WeatherService extends BaseService {
 
   @override
-  Future getResponse(String url) async {
+  Future getResponse(String city) async {
     dynamic responseJson;
     try {
       final response = await http.get(
-          Uri.parse(baseURL + Constants.city + appIdPath));
+          Uri.parse(baseURL + city + appIdPath));
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');
