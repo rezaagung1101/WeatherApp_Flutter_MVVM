@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
           color: Constants.skyBlue,
-          child: SingleChildScrollView(
+          child: const SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 InformationCardSection(

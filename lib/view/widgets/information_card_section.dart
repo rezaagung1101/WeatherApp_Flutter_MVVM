@@ -22,71 +22,98 @@ class InformationCardSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      //CrossAxisAlignment.stretch to ensure that CardItem widgets occupy the full width of their parent Column.
       children: [
         SizedBox(
           height: 100,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(height: 8, width: 16,),
+              const SizedBox(
+                height: 8,
+                width: 16,
+              ),
               Expanded(
+                //Expanded widget. This ensures that each widget takes an equal portion of the available space horizontally.
                 child: CardItem(
                   imagePath: "images/sunrise.png",
                   label: "Sunrise",
                   value: sunrise,
+                  onTap: () {},
                 ),
               ),
-              const SizedBox(width: 4,),
+              const SizedBox(
+                width: 4,
+              ),
               Expanded(
                 child: CardItem(
                   imagePath: "images/sunset.png",
                   label: "Sunset",
                   value: sunset,
+                  onTap: () {},
                 ),
               ),
-              const SizedBox(width: 4,),
+              const SizedBox(
+                width: 4,
+              ),
               Expanded(
                 child: CardItem(
                   imagePath: "images/wind.png",
                   label: "Wind",
                   value: wind,
+                  onTap: () {},
                 ),
               ),
-              const SizedBox(width: 16,),
+              const SizedBox(
+                width: 16,
+              ),
             ],
           ),
         ),
-        const SizedBox(height: 4,),
+        const SizedBox(
+          height: 4,
+        ),
         SizedBox(
           height: 100,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(width: 16,),
+              const SizedBox(
+                width: 16,
+              ),
               Expanded(
                 child: CardItem(
                   imagePath: "images/pressure.png",
                   label: "Pressure",
                   value: pressure,
+                  onTap: () {},
                 ),
               ),
-              const SizedBox(width: 4,),
+              const SizedBox(
+                width: 4,
+              ),
               Expanded(
                 child: CardItem(
                   imagePath: "images/humidity.png",
                   label: "Humidity",
                   value: humidity,
+                  onTap: () {},
                 ),
               ),
-              const SizedBox(width: 4,),
+              const SizedBox(
+                width: 4,
+              ),
               Expanded(
                 child: CardItem(
-                  imagePath: "images/info.png",
+                  imagePath: "images/refresh.png",
                   label: "Update",
                   value: info,
+                  onTap: () {},
                 ),
               ),
-              const SizedBox(width: 16,),
+              const SizedBox(
+                width: 16,
+              ),
             ],
           ),
         ),
@@ -100,23 +127,26 @@ class CardItem extends StatelessWidget {
       {super.key,
       required this.imagePath,
       required this.label,
-      required this.value});
+      required this.value,
+      required this.onTap});
 
   final String imagePath;
   final String label;
   final String value;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Material(
+      color: Colors.transparent,
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
+        splashColor: Colors.blueAccent,
+        borderRadius: BorderRadius.circular(8),
         child: Container(
-          height: 150,
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             color: Constants.cardBackground,
-            // color: Colors.grey[200], // Adjust color as needed
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: Column(
@@ -128,7 +158,7 @@ class CardItem extends StatelessWidget {
                 height: 25, // Adjust height as needed
                 color: Colors.white, // Apply white tint
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 2),
               Text(
                 label,
                 style: TextStyle(
@@ -153,62 +183,3 @@ class CardItem extends StatelessWidget {
     );
   }
 }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         SizedBox(
-//           height: 80,
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               CardItem(
-//                   imagePath: "images/sunrise.png",
-//                   label: "Sunrise",
-//                   value: sunrise),
-//               CardItem(imagePath: "images/sunset.png",
-//                   label: "Sunset",
-//                   value: sunset),
-//               CardItem(
-//                   imagePath: "images/wind.png", label: "Wind", value: sunset)
-//             ],
-//           ),
-//         ),
-//         SizedBox(
-//           height: 80,
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               CardItem(
-//                   imagePath: "images/pressure.png",
-//                   label: "Pressure",
-//                   value: pressure),
-//               CardItem(imagePath: "images/humidity.png",
-//                   label: "Humidity",
-//                   value: humidity),
-//               CardItem(imagePath: "images/info.png", label: "Info", value: info)
-//             ],
-//           ),
-//         )
-//       ],
-//     );
-//   }
-// }
-
-// @override
-// Widget build(BuildContext context) {
-//   return InkWell(
-//       onTap: () {},
-//       child: Container(
-//         color: Constants.cardBackground,
-//         padding: const EdgeInsets.all(8.0),
-//         child: Column(
-//           // mainAxisSize: MainAxisSize.max,
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             //this should be the image asset with path covered with white tint, label(text), value(text)
-//           ],
-//         ),
-//       ));
-// }
