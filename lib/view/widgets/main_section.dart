@@ -53,9 +53,12 @@ class MainSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(width: 48,),
-              TextSection(
-                text: mainTemp,
-                size: 90,
+              SizedBox(
+                height: 108,
+                child: TextSection(
+                  text: mainTemp,
+                  size: 90,
+                ),
               ),
               const Align(
                   alignment: Alignment.topLeft,
