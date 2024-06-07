@@ -9,7 +9,7 @@ class InformationCardSection extends StatelessWidget {
       required this.wind,
       required this.pressure,
       required this.humidity,
-      required this.info});
+      required this.info, required this.update});
 
   final String sunrise;
   final String sunset;
@@ -17,6 +17,8 @@ class InformationCardSection extends StatelessWidget {
   final String pressure;
   final String humidity;
   final String info;
+  final VoidCallback update;
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class InformationCardSection extends StatelessWidget {
                 child: CardItem(
                   imagePath: "images/wind.png",
                   label: "Wind",
-                  value: wind,
+                  value: "$wind km/h",
                   onTap: () {},
                 ),
               ),
@@ -85,7 +87,7 @@ class InformationCardSection extends StatelessWidget {
                 child: CardItem(
                   imagePath: "images/pressure.png",
                   label: "Pressure",
-                  value: pressure,
+                  value: "$pressure %",
                   onTap: () {},
                 ),
               ),
@@ -96,7 +98,7 @@ class InformationCardSection extends StatelessWidget {
                 child: CardItem(
                   imagePath: "images/humidity.png",
                   label: "Humidity",
-                  value: humidity,
+                  value: "$humidity hPa",
                   onTap: () {},
                 ),
               ),
@@ -108,7 +110,7 @@ class InformationCardSection extends StatelessWidget {
                   imagePath: "images/refresh.png",
                   label: "Update",
                   value: info,
-                  onTap: () {},
+                  onTap: update,
                 ),
               ),
               const SizedBox(

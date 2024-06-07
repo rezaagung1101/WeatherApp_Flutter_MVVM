@@ -7,7 +7,7 @@ class Weather {
   final String? maxTemperature;
   final String? sunrise;
   final String? sunset;
-  final String? speed;
+  final String? windSpeed;
   final String? pressure;
   final String? humidity;
 
@@ -20,7 +20,7 @@ class Weather {
     this.maxTemperature,
     this.sunrise,
     this.sunset,
-    this.speed,
+    this.windSpeed,
     this.pressure,
     this.humidity,
   });
@@ -40,15 +40,9 @@ class Weather {
           json['main'] != null ? json['main']['temp_min'].toString() : null,
       maxTemperature:
           json['main'] != null ? json['main']['temp_max'].toString() : null,
-      sunrise: json['sys'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(json['sys']['sunrise'] * 1000)
-              .toString()
-          : null,
-      sunset: json['sys'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(json['sys']['sunset'] * 1000)
-              .toString()
-          : null,
-      speed: json['wind'] != null ? json['wind']['speed'].toString() : null,
+      sunrise: json['sys'] != null ? json['sys']['sunrise'].toString() : null,
+      sunset: json['sys'] != null ? json['sys']['sunset'].toString() : null,
+      windSpeed: json['wind'] != null ? json['wind']['speed'].toString() : null,
       pressure:
           json['main'] != null ? json['main']['pressure'].toString() : null,
       humidity:

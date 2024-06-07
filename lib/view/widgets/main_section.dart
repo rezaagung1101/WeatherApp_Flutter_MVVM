@@ -1,38 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-// class MainSection extends StatefulWidget {
-//   const MainSection(
-//       {super.key, required this.mainTemp, required this.minTemp, required this.maxTemp, required this.desc});
-//
-//   final String mainTemp;
-//   final String minTemp;
-//   final String maxTemp;
-//   final String desc;
-//
-//   @override
-//   State<MainSection> createState() => _MainSectionState();
-// }
-//
-// class _MainSectionState extends State<MainSection> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: <Widget>[
-//           Row(
-//             Text(widget.)
-//           )
-//         ],
-//       ),
-//     )
-//   }
-// }
-
+// ignore: must_be_immutable
 class MainSection extends StatelessWidget {
-  const MainSection(
+   MainSection(
       {super.key,
       required this.mainTemp,
       required this.minTemp,
