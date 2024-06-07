@@ -40,9 +40,9 @@ class MainSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextSection(text: "Min Temp:$minTemp°C", size: 16),
+              TextSection(text: "Min Temp: $minTemp°C", size: 16),
               const SizedBox(width: 16,),
-              TextSection(text: "Max Temp:$maxTemp°C", size: 16),
+              TextSection(text: "Max Temp: $maxTemp°C", size: 16),
             ],
           )
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openweather_mvvm/utils/helper.dart';
+import 'package:openweather_mvvm/view/widgets/header_section.dart';
 import 'package:provider/provider.dart';
 import 'package:openweather_mvvm/model/api/api_response.dart';
 import 'package:openweather_mvvm/model/lib/weather.dart';
@@ -29,19 +30,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ApiResponse apiResponse = Provider.of<WeatherViewModel>(context).response;
+    ApiResponse apiResponse = Provider
+        .of<WeatherViewModel>(context)
+        .response;
     bool isLoading = apiResponse.status == Status.LOADING;
     Weather? weather = apiResponse.data as Weather?;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home Page"),
-      ),
+      // appBar: AppBar(),
       body: Stack(
         children: <Widget>[
           Container(
             color: Constants.skyBlue,
-            child: Center(
-              child: _buildMainContent(weather),
+            child: SafeArea(
+              child: Center(
+                child: _buildMainContent(weather),
+              ),
             ),
           ),
           if (isLoading)
@@ -85,7 +89,12 @@ class _HomeScreenState extends State<HomeScreen> {
     Helper helper = Helper();
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
+        const SizedBox(height: 16,),
+        HeaderSection(city: Constants.city,
+            updatedTime: weather != null ? helper.timezoneOffsetToDate(weather.updatedAt) : "00.00"),
+        const SizedBox(height: 32,),
         MainSection(
           mainTemp: weather != null
               ? helper.kelvinToCelcius(weather.temperature)
@@ -98,13 +107,13 @@ class _HomeScreenState extends State<HomeScreen> {
               : "0.0",
           status: weather != null ? weather.description.toString() : "0.0",
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 64),
         InformationCardSection(
           sunrise: weather != null
               ? helper.unixTimeToAmPm(weather.sunrise)
               : "00.00",
           sunset:
-              weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
+          weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
           wind: weather != null ? weather.windSpeed.toString() : "0.0",
           pressure: weather != null ? weather.pressure.toString() : "0.0",
           humidity: weather != null ? weather.humidity.toString() : "0.0",

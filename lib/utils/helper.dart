@@ -1,24 +1,32 @@
+import 'package:intl/intl.dart';
+import 'dart:developer' as developer;
 enum Status { INITIAL, LOADING, COMPLETED, ERROR }
 
-class Helper{
-  String kelvinToCelcius(String? temperature){
+class Helper {
+  String kelvinToCelcius(String? temperature) {
     double celsius = double.parse(temperature!) - 273.15;
     return celsius.toStringAsFixed(1);
   }
 
   String unixTimeToAmPm(String? unixTime) {
-    // Convert Unix time (seconds since epoch) to DateTime
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(int.parse(unixTime!) * 1000);
-    // Extract hour and minute
-    int hour = date.hour;
-    int minute = date.minute;
-    // Determine AM/PM
-    String period = hour >= 12 ? "PM" : "AM";
-    // Convert hour from 24-hour to 12-hour format
-    hour = hour % 12;
-    hour = hour == 0 ? 12 : hour; // Adjust for midnight and noon
-    // Format minute with leading zero if necessary
-    String minuteStr = minute < 10 ? '0$minute' : minute.toString();
-    return "$hour:$minuteStr $period";
+    DateTime date =
+        DateTime.fromMillisecondsSinceEpoch(int.parse(unixTime!) * 1000);
+    return DateFormat('h:mm a').format(date);
+  }
+
+  String millisecondsToDate(String? milliseconds) {
+    DateTime dateTime =
+        DateTime.fromMillisecondsSinceEpoch(int.parse(milliseconds!) * 1000);
+    return DateFormat('dd MMM yyyy \'|\' hh:mm a').format(dateTime);
+  }
+
+  String timezoneOffsetToDate(String? timezoneOffset) {
+    DateTime utcTime = DateTime.now().toUtc();
+    DateTime localTime = utcTime.add(Duration(seconds: int.parse(timezoneOffset!)));
+    return DateFormat('dd MMM yyyy \'|\' hh:mm a').format(localTime);
+  }
+
+  void log(String message, {String name = 'openweather_mvvm'}) {
+    developer.log(message, name: name);
   }
 }

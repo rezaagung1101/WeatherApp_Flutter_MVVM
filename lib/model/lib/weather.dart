@@ -28,8 +28,8 @@ class Weather {
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
       city: json['name'] as String?,
-      updatedAt: (json['dt'] != null)
-          ? DateTime.fromMillisecondsSinceEpoch(json['dt'] * 1000).toString()
+      updatedAt: (json['timezone'] != null)
+          ? json['timezone'].toString()
           : null,
       description: json['weather'] != null && json['weather'].isNotEmpty
           ? json['weather'][0]['description'] as String?
