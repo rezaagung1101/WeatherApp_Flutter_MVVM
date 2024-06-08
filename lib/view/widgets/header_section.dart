@@ -13,7 +13,7 @@ class HeaderSection extends StatelessWidget {
     return Row(
       children: <Widget>[
         const Padding(
-          padding: EdgeInsets.fromLTRB(16,0,4,0),
+          padding: EdgeInsets.fromLTRB(0,0,4,0),
           child: Icon(
             CupertinoIcons.location,
             size: 40,

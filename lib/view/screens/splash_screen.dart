@@ -93,6 +93,7 @@ class _SplashScreenState extends State<SplashScreen>
               // Image.asset("images/wind.png",
               //     width: 100, height: 100, color: Colors.white),
               Icon(CupertinoIcons.wind, color: Colors.white, size: 100,),
+              SizedBox(height: 16,),
               Text("Weather App",
                   style: TextStyle(
                       color: Colors.white,

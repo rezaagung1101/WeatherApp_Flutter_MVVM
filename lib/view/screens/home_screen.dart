@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openweather_mvvm/utils/helper.dart';
+import 'package:openweather_mvvm/view/widgets/button_section.dart';
 import 'package:openweather_mvvm/view/widgets/header_section.dart';
 import 'package:provider/provider.dart';
 import 'package:openweather_mvvm/model/api/api_response.dart';
@@ -30,9 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ApiResponse apiResponse = Provider
-        .of<WeatherViewModel>(context)
-        .response;
+    ApiResponse apiResponse = Provider.of<WeatherViewModel>(context).response;
     bool isLoading = apiResponse.status == Status.LOADING;
     Weather? weather = apiResponse.data as Weather?;
 
@@ -41,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: <Widget>[
           Container(
+            padding: EdgeInsets.all(16),
             color: Constants.skyBlue,
             child: SafeArea(
               child: Center(
@@ -91,10 +91,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        const SizedBox(height: 16,),
-        HeaderSection(city: Constants.city,
-            updatedTime: weather != null ? helper.timezoneOffsetToDate(weather.updatedAt) : "00.00"),
-        const SizedBox(height: 32,),
+        HeaderSection(
+            city: Constants.city,
+            updatedTime: weather != null
+                ? helper.timezoneOffsetToDate(weather.updatedAt)
+                : "00.00"),
+        const SizedBox(
+          height: 64,
+        ),
         MainSection(
           mainTemp: weather != null
               ? helper.kelvinToCelcius(weather.temperature)
@@ -107,20 +111,25 @@ class _HomeScreenState extends State<HomeScreen> {
               : "0.0",
           status: weather != null ? weather.description.toString() : "0.0",
         ),
-        const SizedBox(height: 64),
+        const SizedBox(height: 100),
         InformationCardSection(
           sunrise: weather != null
               ? helper.unixTimeToAmPm(weather.sunrise)
               : "00.00",
-          sunset:
-          weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
+          sunset: weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
           wind: weather != null ? weather.windSpeed.toString() : "0.0",
           pressure: weather != null ? weather.pressure.toString() : "0.0",
           humidity: weather != null ? weather.humidity.toString() : "0.0",
           info: 'Data',
           update: fetchWeatherData,
         ),
+        const SizedBox(height: 32),
+        ButtonSection(onTap: moveToListCityScreen,)
       ],
     );
+  }
+
+  void moveToListCityScreen(){
+
   }
 }

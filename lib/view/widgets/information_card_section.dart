@@ -31,10 +31,6 @@ class InformationCardSection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(
-                height: 8,
-                width: 16,
-              ),
               Expanded(
                 //Expanded widget. This ensures that each widget takes an equal portion of the available space horizontally.
                 child: CardItem(
@@ -66,9 +62,6 @@ class InformationCardSection extends StatelessWidget {
                   onTap: () {},
                 ),
               ),
-              const SizedBox(
-                width: 16,
-              ),
             ],
           ),
         ),
@@ -80,9 +73,6 @@ class InformationCardSection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(
-                width: 16,
-              ),
               Expanded(
                 child: CardItem(
                   imagePath: "images/pressure.png",
@@ -112,9 +102,6 @@ class InformationCardSection extends StatelessWidget {
                   value: info,
                   onTap: update,
                 ),
-              ),
-              const SizedBox(
-                width: 16,
               ),
             ],
           ),
