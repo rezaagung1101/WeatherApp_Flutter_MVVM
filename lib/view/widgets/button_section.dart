@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:openweather_mvvm/view/widgets/main_section.dart';
 
 class ButtonSection extends StatelessWidget {
-  const ButtonSection({super.key, required this.onTap});
+  const ButtonSection({super.key, required this.onTap, required this.text});
 
   final VoidCallback onTap;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +19,12 @@ class ButtonSection extends StatelessWidget {
           child: SizedBox(
             width: double.infinity, // Match parent width
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 12.0),
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
               decoration: BoxDecoration(
                 color: Colors.transparent, // Button background color
                 border: Border.all(color: Colors.white, width: 2),
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.transparent,
                     spreadRadius: 2,
@@ -32,15 +34,12 @@ class ButtonSection extends StatelessWidget {
                 ],
               ),
               child: Center(
-                child: Text(
-                  "Show 6 more cities",
-                  style: TextStyle(color: Colors.white),
+                child: TextSection(size: 14, text: text,),
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

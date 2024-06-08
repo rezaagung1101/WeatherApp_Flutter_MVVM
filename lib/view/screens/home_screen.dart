@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
           update: fetchWeatherData,
         ),
         const SizedBox(height: 32),
-        ButtonSection(onTap: moveToListCityScreen,)
+        ButtonSection(onTap: moveToListCityScreen, text: "Show 6 more cities")
       ],
     );
   }
