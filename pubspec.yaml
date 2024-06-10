@@ -71,6 +71,7 @@ flutter:
      - images/wind.png
      - images/pressure.png
      - images/refresh.png
+     - images/new_york_city.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

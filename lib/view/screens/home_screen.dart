@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openweather_mvvm/utils/helper.dart';
+import 'package:openweather_mvvm/view/screens/list_city_screen.dart';
 import 'package:openweather_mvvm/view/widgets/button_section.dart';
 import 'package:openweather_mvvm/view/widgets/header_section.dart';
 import 'package:provider/provider.dart';
@@ -130,6 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void moveToListCityScreen(){
-
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return const ListCityScreen();
+    }));
   }
 }

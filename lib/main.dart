@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
 import 'package:openweather_mvvm/view/screens/home_screen.dart';
+import 'package:openweather_mvvm/view/screens/list_city_screen.dart';
 import 'package:openweather_mvvm/view/screens/splash_screen.dart';
 import 'package:openweather_mvvm/view_model/weather_view_model.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (context) => const SplashScreen(),
-            '/home': (context) => const HomeScreen()
+            '/home': (context) => const HomeScreen(),
+            '/list-city': (context) => const ListCityScreen()
           },
         ));
   }
