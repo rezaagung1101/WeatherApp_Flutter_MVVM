@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (context) => const SplashScreen(),
             '/home': (context) => const HomeScreen(),
-            '/list-city': (context) => const ListCityScreen()
+            '/list-city': (context) => ListCityScreen()
           },
         ));
   }

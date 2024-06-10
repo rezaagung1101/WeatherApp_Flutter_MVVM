@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openweather_mvvm/model/lib/city.dart';
+import 'package:openweather_mvvm/view/widgets/button_section.dart';
 
 class ListCityScreen extends StatelessWidget {
   ListCityScreen({super.key});
@@ -13,16 +14,36 @@ class ListCityScreen extends StatelessWidget {
     City("Melbourne", "images/melbourne_city.png"),
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: <Widget>[
-              // ListView.builder(),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: <Widget>[
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: cityList.length,
+                itemBuilder: (context, index) {
+                  final city = cityList[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: CityCardItem(
+                      imagePath: city.imagePath,
+                      cityName: city.name,
+                      onTap: () {},
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 4,),
+              ButtonSection(onTap: () {
+                Navigator.pop(context);
+              }, text: "Back to My City")
+            ],
+          ),
         ),
       ),
     );
@@ -87,4 +108,3 @@ class CityCardItem extends StatelessWidget {
     );
   }
 }
-
