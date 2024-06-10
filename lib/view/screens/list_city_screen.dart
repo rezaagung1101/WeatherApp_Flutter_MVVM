@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openweather_mvvm/model/lib/city.dart';
+import 'package:openweather_mvvm/view/screens/detail_city_screen.dart';
 import 'package:openweather_mvvm/view/widgets/button_section.dart';
 
 class ListCityScreen extends StatelessWidget {
@@ -33,15 +34,25 @@ class ListCityScreen extends StatelessWidget {
                     child: CityCardItem(
                       imagePath: city.imagePath,
                       cityName: city.name,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailCityScreen(cityName: city.name)));
+                      },
                     ),
                   );
                 },
               ),
-              const SizedBox(height: 4,),
-              ButtonSection(onTap: () {
-                Navigator.pop(context);
-              }, text: "Back to My City")
+              const SizedBox(
+                height: 4,
+              ),
+              ButtonSection(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  text: "Back to My City")
             ],
           ),
         ),

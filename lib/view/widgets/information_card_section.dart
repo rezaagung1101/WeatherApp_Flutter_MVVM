@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
+import 'package:openweather_mvvm/view/widgets/main_section.dart';
 
 class InformationCardSection extends StatelessWidget {
   const InformationCardSection(
@@ -147,24 +148,10 @@ class CardItem extends StatelessWidget {
                 height: 25, // Adjust height as needed
                 color: Colors.white, // Apply white tint
               ),
-              SizedBox(height: 2),
-              Text(
-                label,
-                style: TextStyle(
-                  fontFamily: 'poppins',
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                value,
-                style: TextStyle(
-                  fontFamily: 'poppins',
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
-              ),
+              const SizedBox(height: 2),
+              TextSection(text: label, size: 12),
+              const SizedBox(height: 4),
+              TextSection(text: value, size: 12),
             ],
           ),
         ),

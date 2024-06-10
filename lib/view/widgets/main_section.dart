@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:recase/recase.dart';
 // ignore: must_be_immutable
 class MainSection extends StatelessWidget {
    MainSection(
@@ -16,6 +16,7 @@ class MainSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ReCase capStatus = ReCase(status);
     return Column(
         children: <Widget>[
           Row(
@@ -35,7 +36,7 @@ class MainSection extends StatelessWidget {
                   child: TextSection(text: "°C", size: 40)),
             ],
           ),
-          TextSection(text: status, size: 20),
+          TextSection(text: capStatus.titleCase, size: 20),
           const SizedBox(height: 4,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

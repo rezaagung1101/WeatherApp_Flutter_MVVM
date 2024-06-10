@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'dart:developer' as developer;
+
 enum Status { INITIAL, LOADING, COMPLETED, ERROR }
 
 class Helper {
@@ -22,11 +23,26 @@ class Helper {
 
   String timezoneOffsetToDate(String? timezoneOffset) {
     DateTime utcTime = DateTime.now().toUtc();
-    DateTime localTime = utcTime.add(Duration(seconds: int.parse(timezoneOffset!)));
+    DateTime localTime =
+        utcTime.add(Duration(seconds: int.parse(timezoneOffset!)));
     return DateFormat('dd MMM yyyy \'|\' hh:mm a').format(localTime);
   }
 
   void log(String message, {String name = 'openweather_mvvm'}) {
     developer.log(message, name: name);
+  }
+
+  String capitalize(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    List<String> words = input.split(' ');
+    String capitalizedString = words.map((word) {
+      if (word.isEmpty) {
+        return '';
+      }
+      return '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}';
+    }).join(' ');
+    return capitalizedString;
   }
 }
