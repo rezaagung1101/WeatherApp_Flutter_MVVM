@@ -21,6 +21,7 @@ class InformationCardSection extends StatelessWidget {
   final VoidCallback update;
 
 
+
   @override
   Widget build(BuildContext context) {
     return Column(

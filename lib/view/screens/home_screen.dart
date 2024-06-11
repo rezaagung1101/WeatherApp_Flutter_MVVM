@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:openweather_mvvm/utils/helper.dart';
-import 'package:openweather_mvvm/view/screens/list_city_screen.dart';
-import 'package:openweather_mvvm/view/widgets/button_section.dart';
-import 'package:openweather_mvvm/view/widgets/header_section.dart';
-import 'package:provider/provider.dart';
 import 'package:openweather_mvvm/model/api/api_response.dart';
 import 'package:openweather_mvvm/model/lib/weather.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
+import 'package:openweather_mvvm/utils/helper.dart';
+import 'package:openweather_mvvm/utils/preference_util.dart';
+import 'package:openweather_mvvm/view/screens/list_city_screen.dart';
+import 'package:openweather_mvvm/view/widgets/button_section.dart';
+import 'package:openweather_mvvm/view/widgets/header_section.dart';
 import 'package:openweather_mvvm/view/widgets/information_card_section.dart';
 import 'package:openweather_mvvm/view/widgets/main_section.dart';
 import 'package:openweather_mvvm/view_model/weather_view_model.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,25 +20,48 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Weather? savedWeather;
+
   @override
   void initState() {
     super.initState();
-    fetchWeatherData();
+    fetchSavedWeatherData();
   }
 
-  void fetchWeatherData() {
-    Provider.of<WeatherViewModel>(context, listen: false)
-        .fetchWeatherData(Constants.city);
+  Future<void> fetchSavedWeatherData() async {
+    Weather? weather = PreferenceUtil.getWeather();
+    if (weather != null) {
+      setState(() {
+        savedWeather = weather;
+      });
+    } else {
+      fetchWeatherData();
+    }
   }
 
+  void fetchWeatherData() async {
+    // Provider.of<WeatherViewModel>(context, listen: false)
+    //     .fetchWeatherData(Constants.defaultCity);
+    await Provider.of<WeatherViewModel>(context, listen: false)
+        .fetchWeatherData(Constants.defaultCity);
+    Weather? newWeather =
+        Provider.of<WeatherViewModel>(context, listen: false).weather;
+    if (newWeather != null) {
+      await PreferenceUtil.setWeather(newWeather);
+      setState(() {
+        savedWeather = newWeather;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     ApiResponse apiResponse = Provider.of<WeatherViewModel>(context).response;
     bool isLoading = apiResponse.status == Status.LOADING;
-    Weather? weather = apiResponse.data as Weather?;
+    String? message = apiResponse.message;
+    // Weather? weather = apiResponse.data as Weather?;
+    Weather? weather = savedWeather;
 
     return Scaffold(
-      // appBar: AppBar(),
       body: Stack(
         children: <Widget>[
           Container(
@@ -93,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         HeaderSection(
-            city: Constants.city,
+            city: Constants.defaultCity,
             updatedTime: weather != null
                 ? helper.timezoneOffsetToDate(weather.updatedAt)
                 : "00.00"),

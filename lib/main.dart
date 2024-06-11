@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
+import 'package:openweather_mvvm/utils/preference_util.dart';
 import 'package:openweather_mvvm/view/screens/home_screen.dart';
 import 'package:openweather_mvvm/view/screens/list_city_screen.dart';
 import 'package:openweather_mvvm/view/screens/splash_screen.dart';
 import 'package:openweather_mvvm/view_model/weather_view_model.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializePreference();
+  //or it can be directly with -> await PreferenceUtil.init();
   runApp(const MyApp());
+}
+
+Future<void> initializePreference() async {
+  await PreferenceUtil.init();
 }
 
 class MyApp extends StatelessWidget {
