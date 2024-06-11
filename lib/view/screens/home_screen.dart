@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:openweather_mvvm/model/api/api_response.dart';
 import 'package:openweather_mvvm/model/lib/weather.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
@@ -25,7 +26,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fetchSavedWeatherData();
+    checkInternetConnection();
+  }
+
+  Future<void> checkInternetConnection() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      fetchSavedWeatherData();
+    } else {
+      fetchWeatherData();
+    }
   }
 
   Future<void> fetchSavedWeatherData() async {
@@ -53,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     ApiResponse apiResponse = Provider.of<WeatherViewModel>(context).response;
@@ -74,18 +85,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           if (isLoading)
-            Container(
-              color: Colors.black.withOpacity(0.5), // Semi-transparent overlay
-              child: const Center(
-                child: SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: CircularProgressIndicator(
-                        color: Colors.white,
-                        backgroundColor: Colors.blue,
-                        strokeWidth: 2)),
-              ),
-            ),
+            _buildLoadingContent(message)
+            // Container(
+            //   color: Colors.black.withOpacity(0.5), // Semi-transparent overlay
+            //   child: const Center(
+            //     child: SizedBox(
+            //         width: 60,
+            //         height: 60,
+            //         child: CircularProgressIndicator(
+            //             color: Colors.white,
+            //             backgroundColor: Colors.blue,
+            //             strokeWidth: 2)),
+            //   ),
+            // ),
         ],
       ),
     );
@@ -106,6 +118,35 @@ class _HomeScreenState extends State<HomeScreen> {
   //       return const Text("No data");
   //   }
   // }
+  Widget _buildLoadingContent(String? message){
+    return Container(
+      color: Colors.black.withOpacity(0.5), // Semi-transparent overlay
+      child: Center(
+        child: Container(
+          height: 200,
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+              color: Constants.cardBackground,
+              borderRadius: BorderRadius.circular(10)
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              TextSection(text: message!, size: 14),
+              const SizedBox(height: 8,),
+              const SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(
+                      color: Colors.white,
+                      backgroundColor: Colors.blue,
+                      strokeWidth: 2)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildMainContent(Weather? weather) {
     // if (weather == null) {
@@ -141,7 +182,8 @@ class _HomeScreenState extends State<HomeScreen> {
           sunrise: weather != null
               ? helper.unixTimeToAmPm(weather.sunrise)
               : "00.00",
-          sunset: weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
+          sunset:
+              weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
           wind: weather != null ? weather.windSpeed.toString() : "0.0",
           pressure: weather != null ? weather.pressure.toString() : "0.0",
           humidity: weather != null ? weather.humidity.toString() : "0.0",
@@ -154,8 +196,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void moveToListCityScreen(){
-    Navigator.push(context, MaterialPageRoute(builder: (context){
+  void moveToListCityScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ListCityScreen();
     }));
   }

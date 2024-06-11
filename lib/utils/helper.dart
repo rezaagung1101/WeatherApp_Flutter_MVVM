@@ -25,7 +25,7 @@ class Helper {
     DateTime utcTime = DateTime.now().toUtc();
     DateTime localTime =
         utcTime.add(Duration(seconds: int.parse(timezoneOffset!)));
-    return DateFormat('dd MMM yyyy \'|\' hh:mm:ss a').format(localTime);
+    return DateFormat('dd MMM yyyy \'|\' hh:mm:ss').format(localTime);
   }
 
   void log(String message, {String name = 'openweather_mvvm'}) {
