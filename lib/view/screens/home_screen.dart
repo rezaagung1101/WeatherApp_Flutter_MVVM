@@ -86,18 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           if (isLoading)
             _buildLoadingContent(message)
-            // Container(
-            //   color: Colors.black.withOpacity(0.5), // Semi-transparent overlay
-            //   child: const Center(
-            //     child: SizedBox(
-            //         width: 60,
-            //         height: 60,
-            //         child: CircularProgressIndicator(
-            //             color: Colors.white,
-            //             backgroundColor: Colors.blue,
-            //             strokeWidth: 2)),
-            //   ),
-            // ),
         ],
       ),
     );
@@ -120,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
   Widget _buildLoadingContent(String? message){
     return Container(
-      color: Colors.black.withOpacity(0.5), // Semi-transparent overlay
+      color: Colors.black.withOpacity(0.6), // Semi-transparent overlay
       child: Center(
         child: Container(
           height: 200,
@@ -147,54 +135,58 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
   Widget _buildMainContent(Weather? weather) {
+    Helper helper = Helper();
     // if (weather == null) {
     //   return const SizedBox.shrink();
     // }
-    Helper helper = Helper();
-
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         HeaderSection(
-            city: Constants.defaultCity,
-            updatedTime: weather != null
-                ? helper.timezoneOffsetToDate(weather.updatedAt)
-                : "00.00"),
-        const SizedBox(
-          height: 64,
-        ),
-        MainSection(
-          mainTemp: weather != null
-              ? helper.kelvinToCelcius(weather.temperature)
-              : "0.0",
-          minTemp: weather != null
-              ? helper.kelvinToCelcius(weather.minTemperature)
-              : "0.0",
-          maxTemp: weather != null
-              ? helper.kelvinToCelcius(weather.maxTemperature)
-              : "0.0",
-          status: weather != null ? weather.description.toString() : "0.0",
-        ),
-        const SizedBox(height: 100),
-        InformationCardSection(
-          sunrise: weather != null
-              ? helper.unixTimeToAmPm(weather.sunrise)
+          city: Constants.defaultCity,
+          updatedTime: weather != null
+              ? helper.timezoneOffsetToDate(weather.updatedAt)
               : "00.00",
-          sunset:
-              weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
-          wind: weather != null ? weather.windSpeed.toString() : "0.0",
-          pressure: weather != null ? weather.pressure.toString() : "0.0",
-          humidity: weather != null ? weather.humidity.toString() : "0.0",
-          info: 'Data',
-          update: fetchWeatherData,
         ),
-        const SizedBox(height: 32),
-        ButtonSection(onTap: moveToListCityScreen, text: "Show 6 more cities")
+        const SizedBox(height: 64),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(height: 32),
+              MainSection(
+                mainTemp: weather != null
+                    ? helper.kelvinToCelcius(weather.temperature)
+                    : "0.0",
+                minTemp: weather != null
+                    ? helper.kelvinToCelcius(weather.minTemperature)
+                    : "0.0",
+                maxTemp: weather != null
+                    ? helper.kelvinToCelcius(weather.maxTemperature)
+                    : "0.0",
+                status: weather != null ? weather.description.toString() : "0.0",
+              ),
+              const SizedBox(height: 100),
+              InformationCardSection(
+                sunrise: weather != null
+                    ? helper.unixTimeToAmPm(weather.sunrise)
+                    : "00.00",
+                sunset:
+                weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
+                wind: weather != null ? weather.windSpeed.toString() : "0.0",
+                pressure: weather != null ? weather.pressure.toString() : "0.0",
+                humidity: weather != null ? weather.humidity.toString() : "0.0",
+                info: 'Data',
+                update: fetchWeatherData,
+              ),
+            ],
+          ),
+        ),
+        ButtonSection(onTap: moveToListCityScreen, text: "Show 6 more cities"),
       ],
     );
   }
+
 
   void moveToListCityScreen() {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
