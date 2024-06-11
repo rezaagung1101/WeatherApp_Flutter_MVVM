@@ -84,8 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          if (isLoading)
-            _buildLoadingContent(message)
+          if (isLoading) _buildLoadingContent(message)
         ],
       ),
     );
@@ -106,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //       return const Text("No data");
   //   }
   // }
-  Widget _buildLoadingContent(String? message){
+  Widget _buildLoadingContent(String? message) {
     return Container(
       color: Colors.black.withOpacity(0.6), // Semi-transparent overlay
       child: Center(
@@ -115,13 +114,14 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
               color: Constants.cardBackground,
-              borderRadius: BorderRadius.circular(10)
-          ),
+              borderRadius: BorderRadius.circular(10)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               TextSection(text: message!, size: 14),
-              const SizedBox(height: 8,),
+              const SizedBox(
+                height: 8,
+              ),
               const SizedBox(
                   width: 60,
                   height: 60,
@@ -135,6 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   Widget _buildMainContent(Weather? weather) {
     Helper helper = Helper();
     // if (weather == null) {
@@ -164,15 +165,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 maxTemp: weather != null
                     ? helper.kelvinToCelcius(weather.maxTemperature)
                     : "0.0",
-                status: weather != null ? weather.description.toString() : "0.0",
+                status:
+                    weather != null ? weather.description.toString() : "0.0",
               ),
               const SizedBox(height: 100),
               InformationCardSection(
                 sunrise: weather != null
                     ? helper.unixTimeToAmPm(weather.sunrise)
                     : "00.00",
-                sunset:
-                weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
+                sunset: weather != null
+                    ? helper.unixTimeToAmPm(weather.sunset)
+                    : "00.00",
                 wind: weather != null ? weather.windSpeed.toString() : "0.0",
                 pressure: weather != null ? weather.pressure.toString() : "0.0",
                 humidity: weather != null ? weather.humidity.toString() : "0.0",
@@ -186,7 +189,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-
 
   void moveToListCityScreen() {
     Navigator.push(context, MaterialPageRoute(builder: (context) {

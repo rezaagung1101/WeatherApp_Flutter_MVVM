@@ -35,7 +35,7 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
     ApiResponse apiResponse = Provider.of<WeatherViewModel>(context).response;
     bool isLoading = apiResponse.status == Status.LOADING;
     Weather? weather = apiResponse.data as Weather?;
-
+    String? message = apiResponse.message;
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -49,18 +49,7 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
             ),
           ),
           if (isLoading)
-            Container(
-              color: Colors.black.withOpacity(0.5), // Semi-transparent overlay
-              child: const Center(
-                child: SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: CircularProgressIndicator(
-                        color: Colors.white,
-                        backgroundColor: Colors.blue,
-                        strokeWidth: 2)),
-              ),
-            ),
+            _buildLoadingContent(message)
         ],
       ),
     );
@@ -112,4 +101,33 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
     );
   }
 
+  Widget _buildLoadingContent(String? message){
+    return Container(
+      color: Colors.black.withOpacity(0.6), // Semi-transparent overlay
+      child: Center(
+        child: Container(
+          height: 200,
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+              color: Constants.cardBackground,
+              borderRadius: BorderRadius.circular(10)
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              TextSection(text: message!, size: 14),
+              const SizedBox(height: 8,),
+              const SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(
+                      color: Colors.white,
+                      backgroundColor: Colors.blue,
+                      strokeWidth: 2)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
