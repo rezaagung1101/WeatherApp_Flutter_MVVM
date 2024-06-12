@@ -1,5 +1,7 @@
 
 
+import 'package:openweather_mvvm/utils/helper.dart';
+
 class Weather {
   final String? city;
   final String? updatedAt;
@@ -28,10 +30,11 @@ class Weather {
   });
 
   factory Weather.fromJson(Map<String, dynamic> json) {
+    Helper helper = Helper();
     return Weather(
       city: json['name'] as String?,
       updatedAt: (json['timezone'] != null)
-          ? json['timezone'].toString()
+          ? helper.timezoneOffsetToDate(json['timezone'].toString()) //I convert here because preventing the automatically update while converting at the home screen
           : null,
       description: json['weather'] != null && json['weather'].isNotEmpty
           ? json['weather'][0]['description'] as String?

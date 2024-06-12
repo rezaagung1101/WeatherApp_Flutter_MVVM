@@ -15,7 +15,7 @@ class Helper {
     return DateFormat('h:mm a').format(date);
   }
 
-  String millisecondsToDate(String? milliseconds) {
+  String unixTimeToAmPmSs(String? milliseconds) {
     DateTime dateTime =
         DateTime.fromMillisecondsSinceEpoch(int.parse(milliseconds!) * 1000);
     return DateFormat('dd MMM yyyy \'|\' hh:mm a').format(dateTime);
@@ -28,7 +28,7 @@ class Helper {
     return DateFormat('dd MMM yyyy \'|\' hh:mm:ss').format(localTime);
   }
 
-  void log(String message, {String name = 'openweather_mvvm'}) {
+  void log(String message, {String name = 'helper_log'}) {
     developer.log(message, name: name);
   }
 

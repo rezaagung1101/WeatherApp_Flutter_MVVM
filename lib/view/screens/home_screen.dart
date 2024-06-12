@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Weather? savedWeather;
+  Helper helper = Helper();
 
   @override
   void initState() {
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
       fetchSavedWeatherData();
+      _buildSnackBar("No internet connection");
     } else {
       fetchWeatherData();
     }
@@ -44,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         savedWeather = weather;
       });
+      helper.log(weather.toString());
     } else {
       fetchWeatherData();
     }
@@ -136,8 +139,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _buildSnackBar(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: TextSection(text: message,size: 14,)));
+  }
+
   Widget _buildMainContent(Weather? weather) {
-    Helper helper = Helper();
     // if (weather == null) {
     //   return const SizedBox.shrink();
     // }
@@ -146,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
         HeaderSection(
           city: Constants.defaultCity,
           updatedTime: weather != null
-              ? helper.timezoneOffsetToDate(weather.updatedAt)
+              ? weather.updatedAt!
               : "00.00",
         ),
         const SizedBox(height: 64),
