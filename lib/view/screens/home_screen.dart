@@ -46,15 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         savedWeather = weather;
       });
-      helper.log(weather.toString());
     } else {
       fetchWeatherData();
     }
   }
 
   void fetchWeatherData() async {
-    // Provider.of<WeatherViewModel>(context, listen: false)
-    //     .fetchWeatherData(Constants.defaultCity);
     await Provider.of<WeatherViewModel>(context, listen: false)
         .fetchWeatherData(Constants.defaultCity);
     Weather? newWeather =
@@ -108,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //       return const Text("No data");
   //   }
   // }
+
   Widget _buildLoadingContent(String? message) {
     return Container(
       color: Colors.black.withOpacity(0.6), // Semi-transparent overlay
@@ -153,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
         HeaderSection(
           city: Constants.defaultCity,
           updatedTime: weather != null
-              ? weather.updatedAt!
+              ? weather.updatedAt.toString()
               : "00.00",
         ),
         const SizedBox(height: 64),

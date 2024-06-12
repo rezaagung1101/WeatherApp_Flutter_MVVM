@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:openweather_mvvm/model/api/api_response.dart';
 import 'package:openweather_mvvm/model/lib/weather.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
@@ -22,7 +23,17 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
   @override
   void initState() {
     super.initState();
-    fetchWeatherData();
+    checkInternetConnection();
+  }
+
+  Future<void> checkInternetConnection() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      fetchWeatherData();
+      _buildSnackBar("No internet connection");
+    } else {
+      fetchWeatherData();
+    }
   }
 
   void fetchWeatherData() {
@@ -64,7 +75,7 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
         HeaderSection(
             city: widget.cityName,
             updatedTime: weather != null
-                ? helper.timezoneOffsetToDate(weather.updatedAt)
+                ? weather.updatedAt.toString()
                 : "00.00"),
         const SizedBox(
           height: 64,
@@ -129,5 +140,10 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
         ),
       ),
     );
+  }
+
+  void _buildSnackBar(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: TextSection(text: message,size: 14,)));
   }
 }
