@@ -9,4 +9,9 @@ class WeatherRepository {
     dynamic response = await _weatherService.getResponse(city);
     return Weather.fromJson(response);
   }
+
+  Future<Weather> fetchWeatherDataByLocation(double lat, double lon) async {
+    dynamic response = await _weatherService.getResponseByLocation(lat, lon);
+    return Weather.fromJson(response);
+  }
 }

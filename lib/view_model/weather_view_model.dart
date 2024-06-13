@@ -33,8 +33,23 @@ class WeatherViewModel with ChangeNotifier{
     notifyListeners();
   }
 
-  void setSelectedWeather(Weather? weather){
-    _weather = weather;
+  Future<void> fetchWeatherDataByLocation(double lat, double lon) async{
+    _apiResponse = ApiResponse.loading('Fetching weather data');
+    notifyListeners();
+    try{
+      Weather weather = await WeatherRepository().fetchWeatherDataByLocation(lat, lon);
+      _apiResponse = ApiResponse.completed(weather);
+      _weather = weather;
+      await PreferenceUtil.setWeather(weather);
+    } catch (e){
+      _apiResponse = ApiResponse.error(e.toString());
+      print(e);
+    }
     notifyListeners();
   }
+
+  // void setSelectedWeather(Weather? weather){
+  //   _weather = weather;
+  //   notifyListeners();
+  // }
 }

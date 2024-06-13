@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:openweather_mvvm/model/api/api_response.dart';
 import 'package:openweather_mvvm/model/lib/weather.dart';
+import 'package:openweather_mvvm/model/services/location_service.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
 import 'package:openweather_mvvm/utils/helper.dart';
 import 'package:openweather_mvvm/utils/preference_util.dart';
@@ -11,6 +12,7 @@ import 'package:openweather_mvvm/view/widgets/header_section.dart';
 import 'package:openweather_mvvm/view/widgets/information_card_section.dart';
 import 'package:openweather_mvvm/view/widgets/main_section.dart';
 import 'package:openweather_mvvm/view_model/weather_view_model.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,13 +32,22 @@ class _HomeScreenState extends State<HomeScreen> {
     checkInternetConnection();
   }
 
-  Future<void> checkInternetConnection() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
+  void checkInternetAndFetchWeatherData() async {
+    bool hasInternet = await checkInternetConnection();
+    if (hasInternet) {
+      fetchWeatherData();
+    } else {
       fetchSavedWeatherData();
       _buildSnackBar("No internet connection");
+    }
+  }
+
+  Future<bool> checkInternetConnection() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      return false;
     } else {
-      fetchWeatherData();
+      return true;
     }
   }
 
@@ -52,15 +63,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void fetchWeatherData() async {
-    await Provider.of<WeatherViewModel>(context, listen: false)
-        .fetchWeatherData(Constants.defaultCity);
-    Weather? newWeather =
-        Provider.of<WeatherViewModel>(context, listen: false).weather;
-    if (newWeather != null) {
-      await PreferenceUtil.setWeather(newWeather);
-      setState(() {
-        savedWeather = newWeather;
-      });
+    LocationService locationService = LocationService();
+    try {
+      Position position = await locationService.getCurrentLocation();
+      await Provider.of<WeatherViewModel>(context, listen: false)
+          .fetchWeatherDataByLocation(position.latitude, position.longitude);
+      Weather? newWeather =
+          Provider.of<WeatherViewModel>(context, listen: false).weather;
+      if (newWeather != null) {
+        await PreferenceUtil.setWeather(newWeather);
+        setState(() {
+          savedWeather = newWeather;
+        });
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -138,8 +155,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _buildSnackBar(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: TextSection(text: message,size: 14,)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: TextSection(
+      text: message,
+      size: 14,
+    )));
   }
 
   Widget _buildMainContent(Weather? weather) {
@@ -149,10 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       children: <Widget>[
         HeaderSection(
-          city: Constants.defaultCity,
-          updatedTime: weather != null
-              ? weather.updatedAt.toString()
-              : "00.00",
+          city: "Your Location",
+          updatedTime: weather != null ? weather.updatedAt.toString() : "00.00",
         ),
         const SizedBox(height: 64),
         Expanded(

@@ -14,13 +14,28 @@ class WeatherService extends BaseService {
     dynamic responseJson;
     try {
       final response = await http.get(
-          Uri.parse(baseURL + city + appIdPath));
+          Uri.parse("$baseURL?q=$city$appIdPath"));
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
     return responseJson;
   }
+
+  @override
+  Future getResponseByLocation(double lat, double long) async {
+    dynamic responseJson;
+    try {
+      final response = await http.get(
+          Uri.parse("$baseURL?lat=$lat&lon=$long$appIdPath")
+      );
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+    return responseJson;
+  }
+
 
   @visibleForTesting
   dynamic returnResponse(http.Response response) {
@@ -40,5 +55,7 @@ class WeatherService extends BaseService {
                 ' with status code : ${response.statusCode}');
     }
   }
+
+
 
 }
