@@ -25,7 +25,6 @@ class WeatherViewModel with ChangeNotifier{
       Weather weather = await WeatherRepository().fetchWeatherData(city);
       _apiResponse = ApiResponse.completed(weather);
       _weather = weather;
-      await PreferenceUtil.setWeather(weather);
     } catch (e){
       _apiResponse = ApiResponse.error(e.toString());
       print(e);
@@ -40,7 +39,6 @@ class WeatherViewModel with ChangeNotifier{
       Weather weather = await WeatherRepository().fetchWeatherDataByLocation(lat, lon);
       _apiResponse = ApiResponse.completed(weather);
       _weather = weather;
-      await PreferenceUtil.setWeather(weather);
     } catch (e){
       _apiResponse = ApiResponse.error(e.toString());
       print(e);
