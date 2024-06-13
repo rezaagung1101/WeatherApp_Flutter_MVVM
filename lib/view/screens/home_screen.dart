@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    checkInternetConnection();
+    checkInternetAndFetchWeatherData();
   }
 
   void checkInternetAndFetchWeatherData() async {
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       children: <Widget>[
         HeaderSection(
-          city: "Your Location",
+          city: weather != null ? weather.city.toString() : "Your Location",
           updatedTime: weather != null ? weather.updatedAt.toString() : "00.00",
         ),
         const SizedBox(height: 64),
