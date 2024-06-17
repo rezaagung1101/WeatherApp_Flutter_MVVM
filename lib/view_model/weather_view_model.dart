@@ -46,8 +46,4 @@ class WeatherViewModel with ChangeNotifier{
     notifyListeners();
   }
 
-  // void setSelectedWeather(Weather? weather){
-  //   _weather = weather;
-  //   notifyListeners();
-  // }
 }
