@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 class DetailCityScreen extends StatefulWidget {
   const DetailCityScreen({super.key, required this.cityName});
+
   final String cityName;
 
   @override
@@ -59,8 +60,7 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
               ),
             ),
           ),
-          if (isLoading)
-            _buildLoadingContent(message)
+          if (isLoading) _buildLoadingContent(message)
         ],
       ),
     );
@@ -74,9 +74,8 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
       children: <Widget>[
         HeaderSection(
             city: widget.cityName,
-            updatedTime: weather != null
-                ? weather.updatedAt.toString()
-                : "00.00"),
+            updatedTime:
+                weather != null ? weather.updatedAt.toString() : "00:00"),
         const SizedBox(
           height: 64,
         ),
@@ -96,8 +95,9 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
         InformationCardSection(
           sunrise: weather != null
               ? helper.unixTimeToAmPm(weather.sunrise)
-              : "00.00",
-          sunset: weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
+              : "00:00",
+          sunset:
+              weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00:00",
           wind: weather != null ? weather.windSpeed.toString() : "0.0",
           pressure: weather != null ? weather.pressure.toString() : "0.0",
           humidity: weather != null ? weather.humidity.toString() : "0.0",
@@ -105,14 +105,16 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
           update: fetchWeatherData,
         ),
         const SizedBox(height: 32),
-        ButtonSection(onTap:(){
-          Navigator.pop(context);
-        }, text: "Back to List")
+        ButtonSection(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            text: "Back to List")
       ],
     );
   }
 
-  Widget _buildLoadingContent(String? message){
+  Widget _buildLoadingContent(String? message) {
     return Container(
       color: Colors.black.withOpacity(0.6), // Semi-transparent overlay
       child: Center(
@@ -121,13 +123,14 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
           padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
               color: Constants.cardBackground,
-              borderRadius: BorderRadius.circular(10)
-          ),
+              borderRadius: BorderRadius.circular(10)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               TextSection(text: message!, size: 14),
-              const SizedBox(height: 8,),
+              const SizedBox(
+                height: 8,
+              ),
               const SizedBox(
                   width: 60,
                   height: 60,
@@ -143,7 +146,10 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
   }
 
   void _buildSnackBar(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: TextSection(text: message,size: 14,)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: TextSection(
+      text: message,
+      size: 14,
+    )));
   }
 }

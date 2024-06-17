@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:openweather_mvvm/model/api/api_response.dart';
 import 'package:openweather_mvvm/model/lib/weather.dart';
 import 'package:openweather_mvvm/model/repository/weather_repository.dart';
-import 'package:openweather_mvvm/utils/preference_util.dart';
 
 class WeatherViewModel with ChangeNotifier{
   ApiResponse _apiResponse = ApiResponse.initial("Empty data");

@@ -170,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: <Widget>[
         HeaderSection(
           city: weather != null ? weather.city.toString() : "Your Location",
-          updatedTime: weather != null ? weather.updatedAt.toString() : "00.00",
+          updatedTime: weather != null ? weather.updatedAt.toString() : "00:00",
         ),
         const SizedBox(height: 64),
         Expanded(
@@ -195,10 +195,10 @@ class _HomeScreenState extends State<HomeScreen> {
               InformationCardSection(
                 sunrise: weather != null
                     ? helper.unixTimeToAmPm(weather.sunrise)
-                    : "00.00",
+                    : "00:00",
                 sunset: weather != null
                     ? helper.unixTimeToAmPm(weather.sunset)
-                    : "00.00",
+                    : "00:00",
                 wind: weather != null ? weather.windSpeed.toString() : "0.0",
                 pressure: weather != null ? weather.pressure.toString() : "0.0",
                 humidity: weather != null ? weather.humidity.toString() : "0.0",
