@@ -21,7 +21,6 @@ class DetailCityScreen extends StatefulWidget {
 }
 
 class _DetailCityScreenState extends State<DetailCityScreen> {
-  Weather? savedWeather;
 
   @override
   void initState() {
@@ -52,23 +51,11 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
     String? city = widget.cityName;
     await Provider.of<WeatherViewModel>(context, listen: false)
         .fetchWeatherFromDB(city);
-    Weather? weather =
-        Provider.of<WeatherViewModel>(context, listen: false).weather;
-    setState(() {
-      savedWeather = weather;
-    });
   }
 
   void fetchWeatherData() {
     Provider.of<WeatherViewModel>(context, listen: false)
         .fetchWeatherData(widget.cityName);
-    Weather? newWeather =
-        Provider.of<WeatherViewModel>(context, listen: false).weather;
-    if (newWeather != null) {
-      setState(() {
-        savedWeather = newWeather;
-      });
-    }
   }
 
   @override
@@ -76,7 +63,7 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
     ApiResponse apiResponse = Provider.of<WeatherViewModel>(context).response;
     bool isLoading = apiResponse.status == Status.LOADING;
     // Weather? weather = apiResponse.data as Weather?;
-    Weather? weather = savedWeather;
+    Weather? weather = Provider.of<WeatherViewModel>(context, listen: false).weather;
     String? message = apiResponse.message;
     return Scaffold(
       body: Stack(

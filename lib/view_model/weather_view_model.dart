@@ -21,11 +21,6 @@ class WeatherViewModel with ChangeNotifier {
     _apiResponse = ApiResponse.loading('Fetching weather data');
     notifyListeners();
     try {
-      // Weather? weather = await DatabaseHelper().getWeather(city);
-      // if (weather != null) {
-      //   _weather = weather;
-      //   _apiResponse = ApiResponse.completed(_weather);
-      // } else {
       //fetch froom API
       Weather weather = await WeatherRepository().fetchWeatherData(city);
       _weather = weather;
