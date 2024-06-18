@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:openweather_mvvm/model/api/api_response.dart';
-import 'package:openweather_mvvm/model/lib/weather.dart';
+import 'package:openweather_mvvm/model/data/weather.dart';
 import 'package:openweather_mvvm/model/services/location_service.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
 import 'package:openweather_mvvm/utils/helper.dart';
@@ -29,10 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    checkInternetAndFetchWeatherData();
+    getWeatherData();
   }
 
-  void checkInternetAndFetchWeatherData() async {
+  void getWeatherData() async {
     bool hasInternet = await checkInternetConnection();
     if (hasInternet) {
       fetchWeatherData();
@@ -52,12 +52,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchSavedWeatherData() async {
-    Weather? weather = PreferenceUtil.getWeather();
-    if (weather != null) {
+    String? city = PreferenceUtil.getCity();
+    if(city != null){
+      await Provider.of<WeatherViewModel>(context, listen: false)
+          .fetchWeatherFromDB(city);
+      Weather? weather =
+          Provider.of<WeatherViewModel>(context, listen: false).weather;
       setState(() {
         savedWeather = weather;
       });
-    } else {
+    } else{
       fetchWeatherData();
     }
   }
@@ -71,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Weather? newWeather =
           Provider.of<WeatherViewModel>(context, listen: false).weather;
       if (newWeather != null) {
-        await PreferenceUtil.setWeather(newWeather);
+        await PreferenceUtil.setCity(newWeather.city!);
         setState(() {
           savedWeather = newWeather;
         });
@@ -93,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             color: Constants.skyBlue,
             child: SafeArea(
               child: Center(
@@ -170,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: <Widget>[
         HeaderSection(
           city: weather != null ? weather.city.toString() : "Your Location",
-          updatedTime: weather != null ? weather.updatedAt.toString() : "00.00",
+          updatedTime: weather != null ? weather.updatedAt.toString() : "00:00",
         ),
         const SizedBox(height: 64),
         Expanded(
@@ -195,10 +199,10 @@ class _HomeScreenState extends State<HomeScreen> {
               InformationCardSection(
                 sunrise: weather != null
                     ? helper.unixTimeToAmPm(weather.sunrise)
-                    : "00.00",
+                    : "00:00",
                 sunset: weather != null
                     ? helper.unixTimeToAmPm(weather.sunset)
-                    : "00.00",
+                    : "00:00",
                 wind: weather != null ? weather.windSpeed.toString() : "0.0",
                 pressure: weather != null ? weather.pressure.toString() : "0.0",
                 humidity: weather != null ? weather.humidity.toString() : "0.0",

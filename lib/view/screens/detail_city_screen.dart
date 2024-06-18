@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:openweather_mvvm/model/api/api_response.dart';
-import 'package:openweather_mvvm/model/lib/weather.dart';
+import 'package:openweather_mvvm/model/data/weather.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
 import 'package:openweather_mvvm/utils/helper.dart';
 import 'package:openweather_mvvm/view/widgets/button_section.dart';
@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 class DetailCityScreen extends StatefulWidget {
   const DetailCityScreen({super.key, required this.cityName});
+
   final String cityName;
 
   @override
@@ -20,20 +21,36 @@ class DetailCityScreen extends StatefulWidget {
 }
 
 class _DetailCityScreenState extends State<DetailCityScreen> {
+
   @override
   void initState() {
     super.initState();
-    checkInternetConnection();
+    getWeatherData();
   }
 
-  Future<void> checkInternetConnection() async {
+  void getWeatherData() async {
+    bool hasInternet = await checkInternetConnection();
+    if (hasInternet) {
+      fetchWeatherData();
+    } else {
+      fetchSavedWeatherData();
+      _buildSnackBar("No internet connection");
+    }
+  }
+
+  Future<bool> checkInternetConnection() async {
     var connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
-      fetchWeatherData();
-      _buildSnackBar("No internet connection");
+      return false;
     } else {
-      fetchWeatherData();
+      return true;
     }
+  }
+
+  Future<void> fetchSavedWeatherData() async {
+    String? city = widget.cityName;
+    await Provider.of<WeatherViewModel>(context, listen: false)
+        .fetchWeatherFromDB(city);
   }
 
   void fetchWeatherData() {
@@ -45,7 +62,8 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
   Widget build(BuildContext context) {
     ApiResponse apiResponse = Provider.of<WeatherViewModel>(context).response;
     bool isLoading = apiResponse.status == Status.LOADING;
-    Weather? weather = apiResponse.data as Weather?;
+    // Weather? weather = apiResponse.data as Weather?;
+    Weather? weather = Provider.of<WeatherViewModel>(context, listen: false).weather;
     String? message = apiResponse.message;
     return Scaffold(
       body: Stack(
@@ -59,8 +77,7 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
               ),
             ),
           ),
-          if (isLoading)
-            _buildLoadingContent(message)
+          if (isLoading) _buildLoadingContent(message)
         ],
       ),
     );
@@ -74,9 +91,8 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
       children: <Widget>[
         HeaderSection(
             city: widget.cityName,
-            updatedTime: weather != null
-                ? weather.updatedAt.toString()
-                : "00.00"),
+            updatedTime:
+                weather != null ? weather.updatedAt.toString() : "00:00"),
         const SizedBox(
           height: 64,
         ),
@@ -96,8 +112,9 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
         InformationCardSection(
           sunrise: weather != null
               ? helper.unixTimeToAmPm(weather.sunrise)
-              : "00.00",
-          sunset: weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00.00",
+              : "00:00",
+          sunset:
+              weather != null ? helper.unixTimeToAmPm(weather.sunset) : "00:00",
           wind: weather != null ? weather.windSpeed.toString() : "0.0",
           pressure: weather != null ? weather.pressure.toString() : "0.0",
           humidity: weather != null ? weather.humidity.toString() : "0.0",
@@ -105,14 +122,16 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
           update: fetchWeatherData,
         ),
         const SizedBox(height: 32),
-        ButtonSection(onTap:(){
-          Navigator.pop(context);
-        }, text: "Back to List")
+        ButtonSection(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            text: "Back to List")
       ],
     );
   }
 
-  Widget _buildLoadingContent(String? message){
+  Widget _buildLoadingContent(String? message) {
     return Container(
       color: Colors.black.withOpacity(0.6), // Semi-transparent overlay
       child: Center(
@@ -121,13 +140,14 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
           padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
               color: Constants.cardBackground,
-              borderRadius: BorderRadius.circular(10)
-          ),
+              borderRadius: BorderRadius.circular(10)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               TextSection(text: message!, size: 14),
-              const SizedBox(height: 8,),
+              const SizedBox(
+                height: 8,
+              ),
               const SizedBox(
                   width: 60,
                   height: 60,
@@ -143,7 +163,10 @@ class _DetailCityScreenState extends State<DetailCityScreen> {
   }
 
   void _buildSnackBar(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: TextSection(text: message,size: 14,)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: TextSection(
+      text: message,
+      size: 14,
+    )));
   }
 }

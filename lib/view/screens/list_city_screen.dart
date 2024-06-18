@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:openweather_mvvm/model/lib/city.dart';
+import 'package:openweather_mvvm/model/data/city.dart';
 import 'package:openweather_mvvm/view/screens/detail_city_screen.dart';
 import 'package:openweather_mvvm/view/widgets/button_section.dart';
 
