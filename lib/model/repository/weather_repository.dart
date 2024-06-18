@@ -1,4 +1,4 @@
-import 'package:openweather_mvvm/model/lib/weather.dart';
+import 'package:openweather_mvvm/model/data/weather.dart';
 import 'package:openweather_mvvm/model/services/base_service.dart';
 import 'package:openweather_mvvm/model/services/weather_service.dart';
 

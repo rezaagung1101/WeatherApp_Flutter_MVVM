@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:openweather_mvvm/model/api/api_response.dart';
-import 'package:openweather_mvvm/model/lib/weather.dart';
+import 'package:openweather_mvvm/model/data/weather.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
 import 'package:openweather_mvvm/utils/helper.dart';
 import 'package:openweather_mvvm/view/widgets/button_section.dart';
@@ -21,32 +21,62 @@ class DetailCityScreen extends StatefulWidget {
 }
 
 class _DetailCityScreenState extends State<DetailCityScreen> {
+  Weather? savedWeather;
+
   @override
   void initState() {
     super.initState();
-    checkInternetConnection();
+    getWeatherData();
   }
 
-  Future<void> checkInternetConnection() async {
+  void getWeatherData() async {
+    bool hasInternet = await checkInternetConnection();
+    if (hasInternet) {
+      fetchWeatherData();
+    } else {
+      fetchSavedWeatherData();
+      _buildSnackBar("No internet connection");
+    }
+  }
+
+  Future<bool> checkInternetConnection() async {
     var connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
-      fetchWeatherData();
-      _buildSnackBar("No internet connection");
+      return false;
     } else {
-      fetchWeatherData();
+      return true;
     }
+  }
+
+  Future<void> fetchSavedWeatherData() async {
+    String? city = widget.cityName;
+    await Provider.of<WeatherViewModel>(context, listen: false)
+        .fetchWeatherFromDB(city);
+    Weather? weather =
+        Provider.of<WeatherViewModel>(context, listen: false).weather;
+    setState(() {
+      savedWeather = weather;
+    });
   }
 
   void fetchWeatherData() {
     Provider.of<WeatherViewModel>(context, listen: false)
         .fetchWeatherData(widget.cityName);
+    Weather? newWeather =
+        Provider.of<WeatherViewModel>(context, listen: false).weather;
+    if (newWeather != null) {
+      setState(() {
+        savedWeather = newWeather;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     ApiResponse apiResponse = Provider.of<WeatherViewModel>(context).response;
     bool isLoading = apiResponse.status == Status.LOADING;
-    Weather? weather = apiResponse.data as Weather?;
+    // Weather? weather = apiResponse.data as Weather?;
+    Weather? weather = savedWeather;
     String? message = apiResponse.message;
     return Scaffold(
       body: Stack(

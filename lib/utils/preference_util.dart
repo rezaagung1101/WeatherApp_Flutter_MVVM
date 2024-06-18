@@ -1,4 +1,4 @@
-import 'package:openweather_mvvm/model/lib/weather.dart';
+import 'package:openweather_mvvm/model/data/weather.dart';
 import 'package:openweather_mvvm/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,6 +7,14 @@ class PreferenceUtil {
 
   static Future<void> init() async {
     _preferences = await SharedPreferences.getInstance();
+  }
+
+  static Future<void> setCity(String city) async{
+    await _preferences.setString(Constants.city, city);
+  }
+
+  static String? getCity(){
+    return _preferences.getString(Constants.city);
   }
 
   static Future<void> setWeather(Weather? weather) async {
