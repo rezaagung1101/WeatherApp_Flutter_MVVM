@@ -1,5 +1,3 @@
-
-
 import 'package:openweather_mvvm/utils/helper.dart';
 
 class Weather {
@@ -54,4 +52,37 @@ class Weather {
           json['main'] != null ? json['main']['humidity'].toString() : null,
     );
   }
+
+  Map<String, dynamic> toMap(){
+    return{
+      'city': city,
+      'updatedAt': updatedAt,
+      'description': description,
+      'temperature': temperature,
+      'minTemperature': minTemperature,
+      'maxTemperature': maxTemperature,
+      'sunrise': sunrise,
+      'sunset': sunset,
+      'windSpeed': windSpeed,
+      'pressure': pressure,
+      'humidity': humidity,
+    };
+  }
+
+  factory Weather.fromMap(Map<String, dynamic> map){
+    return Weather(
+      city: map['city'],
+      updatedAt: map['updatedAt'],
+      description: map['description'],
+      temperature: map['temperature'],
+      minTemperature: map['minTemperature'],
+      maxTemperature: map['maxTemperature'],
+      sunrise: map['sunrise'],
+      sunset: map['sunset'],
+      windSpeed: map['windSpeed'],
+      pressure: map['pressure'],
+      humidity: map['humidity'],
+    );
+  }
+  
 }
