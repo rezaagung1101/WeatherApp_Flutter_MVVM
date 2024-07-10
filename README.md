@@ -1,6 +1,6 @@
-# openweather_mvvm
+# My Weather - Flutter
 
-A new Flutter project.
+My Weather is an android app that displays the current weather forecast for your device's current location, and displays the location and all relevant information received. The app gets data via HTTP requests to the OpenWeatherMap API to retrieve the current local weather forecast and parses the response.
 
 ## Getting Started
 
